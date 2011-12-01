@@ -1,4 +1,4 @@
-package org.trebor.tranquil.model;
+package org.trebor.tranquil.model.term;
 
 public class Constant extends AbstractTerm
 {
@@ -16,7 +16,7 @@ public class Constant extends AbstractTerm
   }
   
   @Override
-  public boolean equals(Term other)
+  public boolean equals(Object other)
   {
     return getClass().equals(other.getClass()) &&
       getValue() == ((Constant)other).getValue();

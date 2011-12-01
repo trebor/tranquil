@@ -1,4 +1,4 @@
-package org.trebor.tranquil.model;
+package org.trebor.tranquil.model.term;
 
 public class Add extends AbstractOperator
 {

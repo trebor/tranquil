@@ -1,6 +1,6 @@
-package org.trebor.tranquil.model;
+package org.trebor.tranquil.model.term;
 
-import static org.trebor.tranquil.model.TermProperties.isComutative;
+import static org.trebor.tranquil.model.term.TermProperties.isComutative;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,7 +54,7 @@ public abstract class AbstractOperator extends AbstractTerm implements Operator
   }
   
   @Override
-  public boolean equals(Term other)
+  public boolean equals(Object other)
   {
     if (!super.equals(other))
       return false;

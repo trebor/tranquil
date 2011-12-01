@@ -1,4 +1,4 @@
-package org.trebor.tranquil.model;
+package org.trebor.tranquil.model.term;
 
 public abstract class AbstractTerm implements Term
 {
@@ -9,9 +9,10 @@ public abstract class AbstractTerm implements Term
     mName = name;
   }
 
-  public boolean equals(Term other)
+  @Override
+  public boolean equals(Object other)
   {
-    return getClass().equals(other.getClass()) && getName().equals(other.getName());
+    return getClass().equals(other.getClass()) && getName().equals(((Term)other).getName());
   }
   
   public String getName()

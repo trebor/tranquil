@@ -1,16 +1,30 @@
 package org.trebor.tranquil.model;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.trebor.tranquil.model.TermProperties.*;
-import static org.trebor.tranquil.model.TermProperties.Presidence.*;
 import static org.trebor.tranquil.model.Transformer.*;
+import static org.trebor.tranquil.model.term.TermProperties.*;
+import static org.trebor.tranquil.model.term.TermProperties.Presidence.*;
 import static org.trebor.tranquil.view.TextRenderer.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
+import org.trebor.tranquil.model.pattern.ConstantSlot;
+import org.trebor.tranquil.model.pattern.TermSlot;
+import org.trebor.tranquil.model.pattern.Transform;
+import org.trebor.tranquil.model.pattern.VariableSlot;
+import org.trebor.tranquil.model.term.Add;
+import org.trebor.tranquil.model.term.Constant;
+import org.trebor.tranquil.model.term.Divide;
+import org.trebor.tranquil.model.term.Multiply;
+import org.trebor.tranquil.model.term.Operator;
+import org.trebor.tranquil.model.term.Subtract;
+import org.trebor.tranquil.model.term.Term;
+import org.trebor.tranquil.model.term.Variable;
 import org.trebor.tranquil.util.Util;
 
 public class TestModel
@@ -81,49 +95,83 @@ public class TestModel
   @Test
   public void testMatcher()
   {
-    Variable a = new Variable("A");
-    Variable b = new Variable("B");
+    VariableSlot v1 = new VariableSlot();
+    ConstantSlot c1 = new ConstantSlot();
+    TermSlot t1 = new TermSlot();
+//    Variable a = new Variable("A");
+//    Variable b = new Variable("B");
     Variable dog = new Variable("DOG");
     Variable cat = new Variable("CAT");
     Constant one = new Constant(1);
     Constant two = new Constant(2);
-    Constant three = new Constant(3);
 
-    assertEquals("2", render((new Pattern(one, two)).match(one)));
-    assertEquals("1", render((new Pattern(cat, cat)).match(one)));
-    assertEquals("DOG", render((new Pattern(cat, cat)).match(dog)));
+    assertEquals(two, new Transform(one, two).match(one));
+    assertEquals(null, new Transform(one, two).match(two));
+    assertEquals(null, new Transform(one, two).match(cat));
+    assertEquals(two, new Transform(cat, two).match(cat));
+    assertEquals(null, new Transform(cat, two).match(dog));
+    assertEquals(null, new Transform(cat, two).match(one));
+    
+    
+    assertEquals(one, new Transform(c1, c1).match(one));
+    assertEquals(two, new Transform(c1, c1).match(two));
+    assertEquals(null, new Transform(c1, c1).match(cat));
+    assertEquals(null, new Transform(c1, c1).match(new Add(one, one)));
+    
+    assertEquals(cat, new Transform(v1, v1).match(cat));
+    assertEquals(dog, new Transform(v1, v1).match(dog));
+    assertEquals(null, new Transform(v1, v1).match(one));
+    assertEquals(null, new Transform(v1, v1).match(new Add(cat, cat)));
+
+    assertEquals(cat, new Transform(t1, t1).match(cat));
+    assertEquals(dog, new Transform(t1, t1).match(dog));
+    assertEquals(one, new Transform(t1, t1).match(one));
+    assertEquals(new Add(cat, cat), new Transform(t1, t1).match(new Add(cat, cat)));
+    
+    //    assertEquals(one, new Transform(v1, one).match(cat));
+//    assertEquals(two, new Transform(v1, two).match(one));
+//    assertEquals(null, new Transform(c1, three).match(one));
+    
+    
+//    assertEquals(null, (new Transform(v1, one)).match(one)));
+
+    
+//  assertEquals("2", render((new Transform(one, two)).match(one)));
+//    assertEquals("1", render((new Transform(cat, cat)).match(one)));
+//    assertEquals("DOG", render((new Transform(cat, cat)).match(dog)));
     
     //Variable C = new Variable("C");
 
-    Term template = new Multiply(a, new Divide(b, a));
-    Pattern p1 = new Pattern(template, b);
-
-    assertEquals("B", render(p1.match(new Multiply(a, new Divide(b, a)))));
-    assertEquals("2", render(p1.match(new Multiply(one, new Divide(two, one)))));
-    assertEquals("CAT", render(p1.match(new Multiply(dog, new Divide(cat, dog)))));
-    assertEquals("B", render(p1.match(new Multiply(new Divide(b, a), a))));
-    
-    Pattern p2 = new Pattern(new Multiply(one, two), three);
-    assertEquals("3", render(p2.match(new Multiply(one, two))));
-    assertEquals("3", render(p2.match(new Multiply(two, one))));
-    assertEquals(null, p2.match(new Multiply(one, a)));
-    
-    Pattern p3 = new Pattern(new Multiply(one, a), a);
-    assertEquals("2", render(p3.match(new Multiply(one, two))));
-    assertEquals("2", render(p3.match(new Multiply(two, one))));
-    assertEquals("CAT", render(p3.match(new Multiply(one, cat))));
-    assertEquals("CAT", render(p3.match(new Multiply(cat, one))));
-    assertEquals(null, p3.match(new Multiply(two, cat)));
-    assertEquals(null, p3.match(new Multiply(cat, two)));
-    
-    Pattern p4 = new Pattern(new Multiply(a, b), a);
-    assertEquals("1", render(p4.match(new Multiply(one, two))));
-    assertEquals("2", render(p4.match(new Multiply(two, one))));
-    assertEquals("CAT", render(p4.match(new Multiply(cat, dog))));
-    assertEquals("DOG", render(p4.match(new Multiply(dog, cat))));
+//    Term template = new Multiply(a, new Divide(b, a));
+//    Transform p1 = new Transform(template, b);
+//
+//    assertEquals("B", render(p1.match(new Multiply(a, new Divide(b, a)))));
+//    assertEquals("2", render(p1.match(new Multiply(one, new Divide(two, one)))));
+//    assertEquals("CAT", render(p1.match(new Multiply(dog, new Divide(cat, dog)))));
+//    assertEquals("B", render(p1.match(new Multiply(new Divide(b, a), a))));
+//    
+//    Transform p2 = new Transform(new Multiply(one, two), three);
+//    assertEquals("3", render(p2.match(new Multiply(one, two))));
+//    assertEquals("3", render(p2.match(new Multiply(two, one))));
+//    assertEquals(null, p2.match(new Multiply(one, a)));
+//    
+//    Transform p3 = new Transform(new Multiply(one, a), a);
+//    assertEquals("2", render(p3.match(new Multiply(one, two))));
+//    assertEquals("2", render(p3.match(new Multiply(two, one))));
+//    assertEquals("CAT", render(p3.match(new Multiply(one, cat))));
+//    assertEquals("CAT", render(p3.match(new Multiply(cat, one))));
+//    assertEquals(null, p3.match(new Multiply(two, cat)));
+//    assertEquals(null, p3.match(new Multiply(cat, two)));
+//    
+//    Transform p4 = new Transform(new Multiply(a, b), a);
+//    assertEquals("1", render(p4.match(new Multiply(one, two))));
+//    assertEquals("2", render(p4.match(new Multiply(two, one))));
+//    assertEquals("CAT", render(p4.match(new Multiply(cat, dog))));
+//    assertEquals("DOG", render(p4.match(new Multiply(dog, cat))));
   }
 
   @Test 
+  @Ignore
   public void testSimplify()
   {
     Variable a = new Variable("A");
@@ -201,18 +249,20 @@ public class TestModel
       new Divide(new Variable("B"), new Variable("A")),
       new Multiply(new Multiply(new Variable("A"), new Variable("B")), new Multiply(new Variable("C"), new Variable("D"))),
       new Multiply(new Multiply(new Variable("D"), new Variable("C")), new Multiply(new Variable("B"), new Variable("A"))),
+      new Multiply(new Variable("A"), new Variable("B")),
     };
 
     boolean[] equalsTable =
     {
-      true,  true,  true,  false, false, false, false, false,
-      true,  true,  true,  false, false, false, false, false,
-      true,  true,  true,  false, false, false, false, false,
-      false, false, false, true,  false, false, false, false,
-      false, false, false, false, true , false, false, false,
-      false, false, false, false, false, true , false, false,
-      false, false, false, false, false, false, true , true ,
-      false, false, false, false, false, false, true , true , 
+      true,  true,  true,  false, false, false, false, false, true ,
+      true,  true,  true,  false, false, false, false, false, true ,
+      true,  true,  true,  false, false, false, false, false, true ,
+      false, false, false, true,  false, false, false, false, false,
+      false, false, false, false, true , false, false, false, false,
+      false, false, false, false, false, true , false, false, false,
+      false, false, false, false, false, false, true , true , false,
+      false, false, false, false, false, false, true , true , false,
+      true , true , true , false, false, false, false, false, true ,
     };
     
     assertFalse(terms[0].equals(terms[3]));
@@ -220,7 +270,15 @@ public class TestModel
     int i = 0;
     for (Term t1: terms)
       for (Term t2: terms)
-        assertEquals(String.format("%d: %s -> %s", i, t1, t2), 
-          equalsTable[i++], t1.equals(t2));
+      {
+        String msg = String.format("%d: %s -> %s", i, t1, t2);
+        boolean result = equalsTable[i++];
+        if (result)
+          assertEquals(msg, t1, t2);
+        else
+          assertFalse(msg, t1.equals(t2));
+        
+        assertEquals(msg, result, t1.equals(t2));
+      }
   }
 }

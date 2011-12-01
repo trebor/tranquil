@@ -3,6 +3,13 @@ package org.trebor.tranquil.model;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.trebor.tranquil.model.term.Add;
+import org.trebor.tranquil.model.term.Constant;
+import org.trebor.tranquil.model.term.Divide;
+import org.trebor.tranquil.model.term.Multiply;
+import org.trebor.tranquil.model.term.Subtract;
+import org.trebor.tranquil.model.term.Term;
+import org.trebor.tranquil.model.term.Variable;
 import org.trebor.tranquil.view.TextRenderer;
 
 public class TestView

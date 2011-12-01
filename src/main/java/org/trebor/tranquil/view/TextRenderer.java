@@ -1,13 +1,13 @@
 package org.trebor.tranquil.view;
 
-import static org.trebor.tranquil.model.TermProperties.*;
-import static org.trebor.tranquil.model.TermProperties.Presidence.*;
+import static org.trebor.tranquil.model.term.TermProperties.*;
+import static org.trebor.tranquil.model.term.TermProperties.Presidence.*;
 
 import java.util.List;
 
-import org.trebor.tranquil.model.Operator;
-import org.trebor.tranquil.model.Term;
-import org.trebor.tranquil.model.TermProperties;
+import org.trebor.tranquil.model.term.Operator;
+import org.trebor.tranquil.model.term.Term;
+import org.trebor.tranquil.model.term.TermProperties;
 
 public class TextRenderer
 {
