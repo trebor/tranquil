@@ -4,7 +4,22 @@ import java.util.List;
 
 public interface Operator extends Term
 {
-  enum Arity {ONE, TWO, MANY}
+  enum Arity
+  {
+    ONE(1), TWO(2), MANY(Integer.MAX_VALUE);
+    
+    private final int mSize;
+    
+    Arity(int size)
+    {
+      mSize = size;
+    }
+    
+    public boolean hasRoom(int size)
+    {
+      return size < mSize;
+    }
+  }
   
   Arity getArity();
   List<Term> getOperands();

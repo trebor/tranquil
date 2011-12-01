@@ -4,20 +4,12 @@ public class Add extends AbstractOperator
 {
   public Add()
   {
+    super("+", Arity.TWO);
   }
   
   public Add(Term a, Term b)
   {
+    this();
     addTerms(a, b);
-  }
-
-  public Arity getArity()
-  {
-    return Arity.TWO;
-  }
-
-  public String getName()
-  {
-    return "+";
   }
 }

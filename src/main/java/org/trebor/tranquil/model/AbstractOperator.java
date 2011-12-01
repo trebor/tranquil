@@ -11,10 +11,13 @@ import org.trebor.tranquil.view.TextRenderer;
 
 public abstract class AbstractOperator extends AbstractTerm implements Operator
 {
-  private List<Term> mTerms;
+  private final List<Term> mTerms;
+  private final Arity mArity;
   
-  public AbstractOperator()
+  public AbstractOperator(String name, Arity arity)
   {
+    super(name);
+    mArity = arity;
     mTerms = new ArrayList<Term>();
   }
   
@@ -43,7 +46,11 @@ public abstract class AbstractOperator extends AbstractTerm implements Operator
   public void addTerms(Term...terms)
   {
     for (Term term: terms)
-      mTerms.add(term);
+    {
+      if (!mArity.hasRoom(mTerms.size()))
+        throw new Error(this.toString() + " is about to add too many parameters with " + term);
+        mTerms.add(term);
+    }
   }
   
   @Override
@@ -78,5 +85,10 @@ public abstract class AbstractOperator extends AbstractTerm implements Operator
   public String toString()
   {
     return TextRenderer.render(this);
+  }
+
+  public Arity getArity()
+  {
+    return mArity;
   }
 }

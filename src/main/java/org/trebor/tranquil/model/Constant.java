@@ -3,20 +3,16 @@ package org.trebor.tranquil.model;
 public class Constant extends AbstractTerm
 {
   private final double mValue;
-
+  
   public Constant(double value)
   {
+    super(String.format("%1.0f", value));
     mValue = value; 
   }
   
   public double getValue()
   {
     return mValue;
-  }
-
-  public String getName()
-  {
-    return String.format("%1.0f", mValue);
   }
   
   @Override

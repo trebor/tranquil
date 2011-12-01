@@ -4,20 +4,12 @@ public class Multiply extends AbstractOperator
 {
   public Multiply()
   {
+    super("*", Arity.TWO);
   }
   
   public Multiply(Term a, Term b)
   {
+    this();
     addTerms(a, b);
-  }
-
-  public Arity getArity()
-  {
-    return Arity.TWO;
-  }
-
-  public String getName()
-  {
-    return "*";
   }
 }
