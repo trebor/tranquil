@@ -2,6 +2,10 @@ package org.trebor.tranquil.model;
 
 public class Divide extends AbstractOperator
 {
+  public Divide()
+  {
+  }
+  
   public Divide(Term a, Term b)
   {
     addTerms(a, b);

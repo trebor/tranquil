@@ -8,6 +8,8 @@ public interface Operator extends Term
   
   Arity getArity();
   List<Term> getOperands();
+  List<List<Term>> getOperandPermutations();
   Term getOperand(int index);
   int getOperandCount();
+  void addTerms(Term... terms);
 }

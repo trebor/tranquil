@@ -2,6 +2,10 @@ package org.trebor.tranquil.model;
 
 public class Subtract extends AbstractOperator
 {
+  public Subtract()
+  {
+  }
+  
   public Subtract(Term a, Term b)
   {
     addTerms(a, b);

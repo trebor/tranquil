@@ -1,6 +1,6 @@
 package org.trebor.tranquil.model;
 
-public class Constant implements Term
+public class Constant extends AbstractTerm
 {
   private final double mValue;
 
@@ -9,7 +9,7 @@ public class Constant implements Term
     mValue = value; 
   }
   
-  double getValue()
+  public double getValue()
   {
     return mValue;
   }
@@ -17,5 +17,12 @@ public class Constant implements Term
   public String getName()
   {
     return String.format("%1.0f", mValue);
+  }
+  
+  @Override
+  public boolean equals(Term other)
+  {
+    return getClass().equals(other.getClass()) &&
+      getValue() == ((Constant)other).getValue();
   }
 }

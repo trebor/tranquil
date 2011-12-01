@@ -1,6 +1,6 @@
 package org.trebor.tranquil.model;
 
-public class Variable implements Term
+public class Variable extends AbstractTerm
 {
   private final String mName;
   
