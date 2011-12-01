@@ -1,12 +1,5 @@
-package org.trebor.tranquil.controller;
+package org.trebor.tranquil.model;
 
-import org.trebor.tranquil.model.Add;
-import org.trebor.tranquil.model.Constant;
-import org.trebor.tranquil.model.Divide;
-import org.trebor.tranquil.model.Multiply;
-import org.trebor.tranquil.model.Subtract;
-import org.trebor.tranquil.model.Term;
-import org.trebor.tranquil.model.Variable;
 import org.trebor.tranquil.view.TextRenderer;
 
 public class Transformer

@@ -4,14 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.trebor.tranquil.model.TermProperties.*;
 import static org.trebor.tranquil.model.TermProperties.Presidence.*;
+import static org.trebor.tranquil.model.Transformer.*;
 import static org.trebor.tranquil.view.TextRenderer.*;
-import static org.trebor.tranquil.controller.Transformer.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-import org.trebor.tranquil.controller.Pattern;
 import org.trebor.tranquil.util.Util;
 import org.trebor.tranquil.view.TextRenderer;
 

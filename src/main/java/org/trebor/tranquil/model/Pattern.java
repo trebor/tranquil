@@ -1,13 +1,9 @@
-package org.trebor.tranquil.controller;
+package org.trebor.tranquil.model;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.trebor.tranquil.model.Constant;
-import org.trebor.tranquil.model.Operator;
-import org.trebor.tranquil.model.Term;
-import org.trebor.tranquil.model.Variable;
 import org.trebor.tranquil.view.TextRenderer;
 
 public class Pattern
