@@ -4,12 +4,10 @@ import static org.junit.Assert.*;
 import static org.trebor.tranquil.model.Transformer.*;
 import static org.trebor.tranquil.model.term.TermProperties.*;
 import static org.trebor.tranquil.model.term.TermProperties.Presidence.*;
-import static org.trebor.tranquil.view.TextRenderer.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.trebor.tranquil.model.pattern.ConstantSlot;
 import org.trebor.tranquil.model.pattern.TermSlot;
@@ -167,30 +165,30 @@ public class TestModel
     Constant one = new Constant(1);
     Constant two = new Constant(2);
     
-    assertEquals("A", render(simplify(new Multiply(one, a))));
-    assertEquals("A", render(simplify(new Multiply(a, one))));
-    assertEquals("2", render(simplify(new Multiply(two, one))));
+    assertEquals(a, simplify(new Multiply(one, a)));
+    assertEquals(a, simplify(new Multiply(a, one)));
+    assertEquals(two, simplify(new Multiply(two, one)));
     
-    assertEquals("1 / A", render(simplify(new Divide(one, a))));
-    assertEquals("A", render(simplify(new Divide(a, one))));
-    assertEquals("1 / 2", render(simplify(new Divide(one, two))));
-    assertEquals("2", render(simplify(new Divide(two, one))));
+    assertEquals(new Divide(one, a), simplify(new Divide(one, a)));
+    assertEquals(a, simplify(new Divide(a, one)));
+    assertEquals(new Divide(one, two), simplify(new Divide(one, two)));
+    assertEquals(two, simplify(new Divide(two, one)));
     
-    assertEquals("1", render(simplify(new Divide(cat, cat))));
-    assertEquals("CAT / DOG", render(simplify(new Divide(cat, dog))));
+    assertEquals(one, simplify(new Divide(cat, cat)));
+    assertEquals(new Divide(cat, dog), simplify(new Divide(cat, dog)));
     
-    assertEquals("DOG", render(simplify(new Add(zero, dog))));
-    assertEquals("DOG", render(simplify(new Add(dog, zero))));
+    assertEquals(dog, simplify(new Add(zero, dog)));
+    assertEquals(dog, simplify(new Add(dog, zero)));
     
-    assertEquals("DOG", render(simplify(new Subtract(dog, zero))));
-    assertEquals("0 - DOG", render(simplify(new Subtract(zero, dog))));
+    assertEquals(dog, simplify(new Subtract(dog, zero)));
+    assertEquals(new Subtract(zero, dog), simplify(new Subtract(zero, dog)));
     
-    assertEquals("DOG", render(simplify(new Multiply(cat, new Divide(dog, cat)))));
-    assertEquals("DOG", render(simplify(new Multiply(new Divide(dog, cat), cat))));
-    assertEquals("1", render(simplify(new Multiply(new Divide(one, cat), cat))));
-    assertEquals("CAT * (CAT / DOG)", render(simplify(new Multiply(cat, new Divide(cat, dog)))));
+    assertEquals(dog, simplify(new Multiply(cat, new Divide(dog, cat))));
+    assertEquals(dog, simplify(new Multiply(new Divide(dog, cat), cat)));
+    assertEquals(one, simplify(new Multiply(new Divide(one, cat), cat)));
+    assertEquals(new Multiply(cat, new Divide(cat, dog)), simplify(new Multiply(cat, new Divide(cat, dog))));
     
-    assertEquals("A * (DOG + CAT)", render(simplify(new Add(new Multiply(cat, a), new Multiply(a, dog)))));
+    assertEquals(new Multiply(a, new Add(dog, cat)), simplify(new Add(new Multiply(cat, a), new Multiply(a, dog))));
   }
   
   @Test
