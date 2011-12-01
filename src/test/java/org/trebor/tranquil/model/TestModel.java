@@ -158,7 +158,6 @@ public class TestModel
   }
 
   @Test 
-  @Ignore
   public void testSimplify()
   {
     Variable a = new Variable("A");

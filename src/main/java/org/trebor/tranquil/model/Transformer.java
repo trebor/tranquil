@@ -1,5 +1,6 @@
 package org.trebor.tranquil.model;
 
+import org.trebor.tranquil.model.pattern.TermSlot;
 import org.trebor.tranquil.model.pattern.Transform;
 import org.trebor.tranquil.model.term.Add;
 import org.trebor.tranquil.model.term.Constant;
@@ -7,16 +8,15 @@ import org.trebor.tranquil.model.term.Divide;
 import org.trebor.tranquil.model.term.Multiply;
 import org.trebor.tranquil.model.term.Subtract;
 import org.trebor.tranquil.model.term.Term;
-import org.trebor.tranquil.model.term.Variable;
 import org.trebor.tranquil.view.TextRenderer;
 
 public class Transformer
 {
   public static final Constant ZERO = new Constant(0);
   public static final Constant ONE = new Constant(1);
-  public static final Variable A = new Variable("A");
-  public static final Variable B = new Variable("B");
-  public static final Variable C = new Variable("C");
+  public static final TermSlot A = new TermSlot();
+  public static final TermSlot B = new TermSlot();
+  public static final TermSlot C = new TermSlot();
 
   public static final Transform EXPAND = new Transform(new Multiply(A, new Add(B, C)), new Add(new Multiply(A, B), new Multiply(A, C)));
   
