@@ -12,4 +12,12 @@ public class Add extends AbstractOperator
     this();
     addTerms(a, b);
   }
+  
+  public Add copy()
+  {
+    Add copy = new Add();
+    for (Term operand: getOperands())
+      copy.addTerms(operand.copy());
+    return copy; 
+  }
 }

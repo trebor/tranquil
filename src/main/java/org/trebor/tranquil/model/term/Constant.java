@@ -21,4 +21,9 @@ public class Constant extends AbstractTerm
     return getClass().equals(other.getClass()) &&
       getValue() == ((Constant)other).getValue();
   }
+  
+  public Constant copy()
+  {
+    return new Constant(getValue());
+  }
 }

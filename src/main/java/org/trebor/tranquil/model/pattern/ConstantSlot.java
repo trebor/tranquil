@@ -14,4 +14,9 @@ public class ConstantSlot extends AbstractSlot
   {
     return term instanceof Constant;
   }
+  
+//  public ConstantSlot copy()
+//  {
+//    return new ConstantSlot();
+//  }
 }

@@ -27,4 +27,5 @@ public interface Operator extends Term
   Term getOperand(int index);
   int getOperandCount();
   void addTerms(Term... terms);
+//  void replaceOperand(int i, Term term);
 }

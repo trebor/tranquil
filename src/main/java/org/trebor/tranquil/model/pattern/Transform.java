@@ -4,10 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.trebor.tranquil.model.term.Constant;
 import org.trebor.tranquil.model.term.Operator;
 import org.trebor.tranquil.model.term.Term;
-import org.trebor.tranquil.model.term.Variable;
+import org.trebor.tranquil.model.term.TermProperties;
 import org.trebor.tranquil.view.TextRenderer;
 
 public class Transform
@@ -51,19 +50,14 @@ public class Transform
     // if this result is a varible, return value in the map
     
     if (result instanceof Slot)
-      return slotMap.get(result);
+      return slotMap.get(result).copy();
       
-    // if this result is a varible, return value in the map
+    // if this result is atmoc,return copy of atomic term
     
-    if (result instanceof Variable)
-      return result;
-      
-    // if this result is a constant, return the constant
-    
-    if (result instanceof Constant)
-      return result;
+    if (TermProperties.isAtomic(result))
+      return result.copy();
 
-    // the result is assumed now to be an operator, recurese
+    // the result is assumed to be an operator, recurese
     
     return populateResult((Operator)result, slotMap);
   }

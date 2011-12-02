@@ -6,4 +6,9 @@ public class Variable extends AbstractTerm
   {
     super(name);
   }
+  
+  public Variable copy()
+  {
+    return new Variable(getName());
+  }
 }

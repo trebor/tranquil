@@ -12,4 +12,12 @@ public class Multiply extends AbstractOperator
     this();
     addTerms(a, b);
   }
+  
+  public Multiply copy()
+  {
+    Multiply copy = new Multiply();
+    for (Term operand: getOperands())
+      copy.addTerms(operand.copy());
+    return copy; 
+  }
 }

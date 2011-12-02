@@ -1,5 +1,7 @@
 package org.trebor.tranquil.model.term;
 
+import org.trebor.tranquil.view.TextRenderer;
+
 public abstract class AbstractTerm implements Term
 {
   private final String mName;
@@ -18,5 +20,11 @@ public abstract class AbstractTerm implements Term
   public String getName()
   {
     return mName;
+  }
+  
+  @Override
+  public String toString()
+  {
+    return TextRenderer.render(this);
   }
 }

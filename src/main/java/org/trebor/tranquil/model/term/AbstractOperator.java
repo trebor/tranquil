@@ -31,6 +31,11 @@ public abstract class AbstractOperator extends AbstractTerm implements Operator
     return Collections.unmodifiableList(mTerms);
   }
   
+  public void replaceOperand(int i, Term term)
+  {
+    mTerms.set(i, term.copy());
+  }
+
   public List<List<Term>> getOperandPermutations()
   {
     return isComutative(this)
@@ -49,7 +54,7 @@ public abstract class AbstractOperator extends AbstractTerm implements Operator
     {
       if (!mArity.hasRoom(mTerms.size()))
         throw new Error(this.toString() + " is about to add too many parameters with " + term);
-        mTerms.add(term);
+        mTerms.add(term.copy());
     }
   }
   
@@ -81,12 +86,6 @@ public abstract class AbstractOperator extends AbstractTerm implements Operator
     return false;
   }
   
-  @Override
-  public String toString()
-  {
-    return TextRenderer.render(this);
-  }
-
   public Arity getArity()
   {
     return mArity;

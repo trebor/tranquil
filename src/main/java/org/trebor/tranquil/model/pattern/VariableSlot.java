@@ -14,4 +14,9 @@ public class VariableSlot extends AbstractSlot
   {
     return term instanceof Variable;
   }
+  
+//  public VariableSlot copy()
+//  {
+//    return new VariableSlot();
+//  }
 }

@@ -14,4 +14,9 @@ public class TermSlot extends AbstractSlot
   {
     return term instanceof Term;
   }
+  
+//  public TermSlot copy()
+//  {
+//    return new TermSlot();
+//  }
 }

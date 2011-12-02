@@ -161,9 +161,14 @@ public class TestModel
     Variable a = new Variable("A");
     Variable dog = new Variable("DOG");
     Variable cat = new Variable("CAT");
+    Variable rat = new Variable("RAT");
     Constant zero = new Constant(0);
     Constant one = new Constant(1);
     Constant two = new Constant(2);
+    
+    assertEquals(a, simplify(a));
+    assertEquals(dog, simplify(dog));
+    assertEquals(one, simplify(one));
     
     assertEquals(a, simplify(new Multiply(one, a)));
     assertEquals(a, simplify(new Multiply(a, one)));
@@ -189,7 +194,62 @@ public class TestModel
     assertEquals(new Multiply(cat, new Divide(cat, dog)), simplify(new Multiply(cat, new Divide(cat, dog))));
     
     assertEquals(new Multiply(a, new Add(dog, cat)), simplify(new Add(new Multiply(cat, a), new Multiply(a, dog))));
+    
+    Term base1 = new Multiply(cat, new Divide(dog, cat)); // dog
+    assertEquals(dog, simplify(base1));
+    Term base2 = new Multiply(one, new Divide(two, one)); // two
+    assertEquals(two, simplify(base2));
+    Term base3 = new Multiply(cat, new Divide(rat, dog)); // cat * rad / dog
+    assertEquals(base3, simplify(base3));
+    Term cplx1 = new Multiply(base1, new Add(base2, base3)); // dog * (two + b3)
+    assertEquals(new Multiply(dog, new Add(two, base3)), simplify(cplx1));
+    Term cplx2 = new Add(zero, new Multiply(base1, one)); // dog
+    assertEquals(dog, simplify(cplx2));
+    Term cplx3 = new Divide(new Multiply(rat, base1), one); // rat * dog
+    assertEquals(new Multiply(rat, dog), simplify(cplx3));
+    Term moma =  new Add(new Multiply(cplx2, cplx1), new Multiply(cplx2, cplx3));
+    assertEquals(new Multiply(dog, new Add(new Multiply(dog, new Add(two, base3)), new Multiply(rat, dog))), simplify(moma));
   }
+
+  @Test
+  public void testCopy()
+  {
+    Term a = new Variable("A");
+    Term b = new Variable("B");
+    Term one = new Constant(1);
+    Term two = new Constant(2);
+    Term mlt = new Multiply(a, b);
+    Term div = new Divide(a, b);
+    Term add = new Add(one, two);
+    Term sub  = new Subtract(one, two);
+    
+    Term terms[] = 
+    {
+      one,
+      two,
+      a,
+      b,
+      mlt,
+      div,
+      add,
+      sub,
+      new Add(new Divide(mlt, add), new Multiply(div, sub)),
+    };
+    
+    for (Term term: terms)
+    {
+      Term copy = term.copy();
+      assertEquals(term, copy);
+      assertTrue(term != copy);
+//      if (term instanceof Operator && term != div)
+//      {
+//        ((Operator)term).replaceOperand(0, div);
+//        assertFalse(term.equals(copy));
+//        assertTrue(term != copy);
+//      }
+    }
+  }
+  
   
   @Test
   public void testPermutation()

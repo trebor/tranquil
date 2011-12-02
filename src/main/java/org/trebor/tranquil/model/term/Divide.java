@@ -12,4 +12,12 @@ public class Divide extends AbstractOperator
     this();
     addTerms(a, b);
   }
+  
+  public Divide copy()
+  {
+    Divide copy = new Divide();
+    for (Term operand: getOperands())
+      copy.addTerms(operand.copy());
+    return copy; 
+  }
 }

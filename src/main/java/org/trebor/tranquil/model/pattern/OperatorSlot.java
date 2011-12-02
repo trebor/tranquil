@@ -14,4 +14,9 @@ public class OperatorSlot extends AbstractSlot
   {
     return term instanceof Operator;
   }
+  
+//  public OperatorSlot copy()
+//  {
+//    return new OperatorSlot();
+//  }
 }
