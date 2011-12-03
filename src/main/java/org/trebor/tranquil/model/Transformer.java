@@ -105,6 +105,16 @@ public class Transformer
           change = true;
         }
       }
+      
+      // if there were no changes, evaluate the sucker
+      
+//      if (!change)
+//      {
+//        Term simple = term.evaluate();
+//        if (simple != term)
+//          change = true;
+//      }
+      
     }
     while (change);
     

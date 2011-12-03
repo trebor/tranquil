@@ -6,7 +6,10 @@ import static org.trebor.tranquil.model.term.TermProperties.*;
 import static org.trebor.tranquil.model.term.TermProperties.Presidence.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.trebor.tranquil.model.pattern.ConstantSlot;
@@ -241,15 +244,74 @@ public class TestModel
       Term copy = term.copy();
       assertEquals(term, copy);
       assertTrue(term != copy);
-//      if (term instanceof Operator && term != div)
-//      {
-//        ((Operator)term).replaceOperand(0, div);
-//        assertFalse(term.equals(copy));
-//        assertTrue(term != copy);
-//      }
     }
   }
   
+  
+  @Test
+  public void testEvaluate()
+  {
+    Variable a = new Variable("A");
+    Variable b = new Variable("B");
+    Variable x = new Variable("X");
+    Constant nTwo = new Constant(-2);
+    Constant nOne = new Constant(-1);
+    Constant zero = new Constant(0);
+    Constant half = new Constant(1d/2d);
+    Constant one = new Constant(1);
+    Constant two = new Constant(2);
+    Constant four = new Constant(4);
+    
+    Map<Variable, Double> map = new HashMap<Variable, Double>();
+    map.put(a, 1d);
+    map.put(b, 2d);
+    
+    Term[][] terms = 
+    {
+      {null, one, one},
+      {null, x, x},
+      {null, two, new Add(one, one)},
+      {null, zero, new Add(one, nOne)},
+
+      {null, zero, new Subtract(one, one)}, 
+      {null, one, new Subtract(two, one)},
+      {null, nOne, new Subtract(one, two)},
+
+      {null, one, new Multiply(one, one)},
+      {null, four, new Multiply(two, two)},
+      {null, nTwo, new Multiply(nOne, two)},
+      
+      {null, one, new Divide(one, one)},
+      {null, one, new Divide(two, two)},
+      {null, two, new Divide(two, one)},
+      {null, half, new Divide(one, two)},
+      
+      {null, one, new Divide(new Multiply(two, two), four)},
+      {null, new Constant(1/4D), new Divide(new Multiply(new Divide(one, two), two), four)},
+      {null, new Constant(5), new Add(new Subtract(new Add(one, two), two), four)},
+      {null, new Constant(6), new Add(new Subtract(new Add(new Divide(new Multiply(new Divide(one, two), two), four), two), new Divide(new Multiply(new Divide(one, two), two), four)), four)},
+      
+      {half, new Divide(a, two), new Divide(a, two)},
+      {two, new Divide(two, a), new Divide(two, a)},
+      {two, new Divide(two, a), new Divide(new Add(one, one), a)},
+      {new Constant(6), new Add(new Subtract(new Add(new Divide(new Multiply(new Divide(a, two), two), four), b), new Constant(1d/4)), four), new Add(new Subtract(new Add(new Divide(new Multiply(new Divide(a, two), two), four), b), new Divide(new Multiply(new Divide(one, two), two), four)), four)},
+    };
+
+    terms[18][1].evaluate(map);
+    
+    for (int i = 0; i <  terms.length; ++i)
+    {
+      Term t1 = terms[i][0];
+      Term t2 = terms[i][1];
+      Term t3 = terms[i][2];
+      if (t1 == null)
+        t1 = t2;
+        
+      assertEquals(i + ": " + t3.toString(), t2, t3.evaluate());
+      assertEquals(i + ": " + t3.toString(), t1, t3.evaluate(map));
+      assertEquals(i + ": " + t3.toString(), t1, t3.evaluate(map));
+    }
+  }
   
   @Test
   public void testPermutation()

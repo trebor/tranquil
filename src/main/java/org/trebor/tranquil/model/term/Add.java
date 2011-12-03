@@ -20,4 +20,9 @@ public class Add extends AbstractOperator
       copy.addTerms(operand.copy());
     return copy; 
   }
+
+  public Double compute(Double prior, Double next)
+  {
+    return prior == null ? next : prior + next;
+  }
 }

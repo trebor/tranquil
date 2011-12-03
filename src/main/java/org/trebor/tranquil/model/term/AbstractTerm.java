@@ -1,5 +1,7 @@
 package org.trebor.tranquil.model.term;
 
+import java.util.Collections;
+
 import org.trebor.tranquil.view.TextRenderer;
 
 public abstract class AbstractTerm implements Term
@@ -9,6 +11,11 @@ public abstract class AbstractTerm implements Term
   public AbstractTerm(String name)
   {
     mName = name;
+  }
+  
+  public Term evaluate()
+  {
+    return evaluate(Collections.<Variable, Double>emptyMap());
   }
 
   @Override

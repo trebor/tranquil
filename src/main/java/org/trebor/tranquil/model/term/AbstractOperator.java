@@ -5,9 +5,9 @@ import static org.trebor.tranquil.model.term.TermProperties.isComutative;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.trebor.tranquil.util.Util;
-import org.trebor.tranquil.view.TextRenderer;
 
 public abstract class AbstractOperator extends AbstractTerm implements Operator
 {
@@ -36,6 +36,106 @@ public abstract class AbstractOperator extends AbstractTerm implements Operator
     mTerms.set(i, term.copy());
   }
 
+  public Term evaluate(Map<Variable, Double> values)
+  {
+    List<Term> evaluted = getEvaluatedOperands(values);
+    List<Term> computed = compute(evaluted);
+    
+    // if the computed is a single constant, then return that aconstant
+    
+    if (computed.size() == 1 && computed.get(0) instanceof Constant)
+      return computed.get(0);
+      
+    // if the operands have not changed then just return this operator unmodified
+    
+    if (computed == getOperands())
+      return this;
+   
+    // create a new instant of this operator
+    
+    Operator operator = null;
+    try
+    {
+      operator = getClass().newInstance();
+    }
+    catch (InstantiationException e)
+    {
+      e.printStackTrace();
+    }
+    catch (IllegalAccessException e)
+    {
+      e.printStackTrace();
+    }
+    
+    for (Term operand: computed)
+      operator.addTerms(operand);
+    
+    return operator;
+  }
+  
+  protected List<Term> compute(List<Term> terms)
+  {
+    List<Term> keeps = new ArrayList<Term>(); 
+    Double tally = null;
+
+    // if this is a comutative operator, it can handle partial computation
+    
+    if (isComutative(this))
+    {
+      for (Term term: terms)
+      {
+        if (term instanceof Constant)
+          tally = compute(tally, ((Constant)term).getValue());
+        else
+          keeps.add(term);
+      }
+    }
+
+    // this is a non-comutative operator, complete computation or nothin
+    
+    else
+    {
+      for (Term term: terms)
+      {
+        if (term instanceof Constant)
+          tally = compute(tally, ((Constant)term).getValue());
+        else
+        {
+          keeps = terms;
+          tally = null;
+          break;
+        }
+      }
+    }
+    
+    // if there is a tally, append it to the keepers
+
+    if (tally != null)
+      keeps.add(new Constant(tally));
+
+    // return the keeper operands
+    
+    return keeps;
+  }
+  
+  public abstract Double compute(Double prior, Double next);
+  
+  protected List<Term> getEvaluatedOperands(Map<Variable, Double> values)
+  {
+    List<Term> evaluated = new ArrayList<Term>();
+    boolean changed = true;
+    
+    for (Term oldOperand : getOperands())
+    {
+      Term newOperand = oldOperand.evaluate(values);
+      evaluated.add(newOperand);
+      if (oldOperand != newOperand)
+        changed = true;
+    }
+
+    return changed ? evaluated : getOperands();
+  }
+  
   public List<List<Term>> getOperandPermutations()
   {
     return isComutative(this)
