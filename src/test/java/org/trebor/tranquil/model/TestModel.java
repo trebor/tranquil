@@ -6,7 +6,6 @@ import static org.trebor.tranquil.model.term.TermProperties.*;
 import static org.trebor.tranquil.model.term.TermProperties.Presidence.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -212,6 +211,9 @@ public class TestModel
     assertEquals(new Multiply(rat, dog), simplify(cplx3));
     Term moma =  new Add(new Multiply(cplx2, cplx1), new Multiply(cplx2, cplx3));
     assertEquals(new Multiply(dog, new Add(new Multiply(dog, new Add(two, base3)), new Multiply(rat, dog))), simplify(moma));
+    
+//    Term reduce = new Add(one, one);
+//    assertEquals(two, reduce);
   }
 
   @Test
@@ -311,6 +313,11 @@ public class TestModel
       assertEquals(i + ": " + t3.toString(), t1, t3.evaluate(map));
       assertEquals(i + ": " + t3.toString(), t1, t3.evaluate(map));
     }
+    
+    Term same = new Subtract(one, b);
+    assertTrue(same == same.evaluate());
+    assertTrue(same != same.evaluate(map));
+    assertEquals(nOne, same.evaluate(map));
   }
   
   @Test

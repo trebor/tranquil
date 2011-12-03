@@ -48,7 +48,7 @@ public abstract class AbstractOperator extends AbstractTerm implements Operator
       
     // if the operands have not changed then just return this operator unmodified
     
-    if (computed == getOperands())
+    if (computed == mTerms)
       return this;
    
     // create a new instant of this operator
@@ -123,9 +123,9 @@ public abstract class AbstractOperator extends AbstractTerm implements Operator
   protected List<Term> getEvaluatedOperands(Map<Variable, Double> values)
   {
     List<Term> evaluated = new ArrayList<Term>();
-    boolean changed = true;
+    boolean changed = false;
     
-    for (Term oldOperand : getOperands())
+    for (Term oldOperand : mTerms)
     {
       Term newOperand = oldOperand.evaluate(values);
       evaluated.add(newOperand);
@@ -133,7 +133,7 @@ public abstract class AbstractOperator extends AbstractTerm implements Operator
         changed = true;
     }
 
-    return changed ? evaluated : getOperands();
+    return changed ? evaluated : mTerms;
   }
   
   public List<List<Term>> getOperandPermutations()
