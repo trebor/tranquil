@@ -1,16 +1,19 @@
 package org.trebor.tranquil.model.term;
 
-import static org.trebor.tranquil.model.term.TermProperties.isComutative;
+import static org.trebor.tranquil.model.term.Properties.isComutative;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.trebor.tranquil.util.Util;
 
 public abstract class AbstractOperator extends AbstractTerm implements Operator
 {
+  public static final Logger log = Logger.getLogger(AbstractTerm.class);
+
   private final List<Term> mTerms;
   private final Arity mArity;
   
@@ -69,6 +72,9 @@ public abstract class AbstractOperator extends AbstractTerm implements Operator
     
     for (Term operand: computed)
       operator.addTerms(operand);
+
+    if (operator.equals(this))
+      return this;
     
     return operator;
   }
@@ -101,7 +107,6 @@ public abstract class AbstractOperator extends AbstractTerm implements Operator
           tally = compute(tally, ((Constant)term).getValue());
         else
         {
-          keeps = terms;
           tally = null;
           break;
         }
@@ -115,7 +120,7 @@ public abstract class AbstractOperator extends AbstractTerm implements Operator
 
     // return the keeper operands
     
-    return keeps;
+    return tally == null ? terms : keeps;
   }
   
   public abstract Double compute(Double prior, Double next);

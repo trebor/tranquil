@@ -1,8 +1,9 @@
-package org.trebor.tranquil.model;
+package org.trebor.tranquil.controller;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.trebor.tranquil.model.pattern.TermSlot;
 import org.trebor.tranquil.model.pattern.Transform;
 import org.trebor.tranquil.model.term.Add;
@@ -12,11 +13,13 @@ import org.trebor.tranquil.model.term.Multiply;
 import org.trebor.tranquil.model.term.Operator;
 import org.trebor.tranquil.model.term.Subtract;
 import org.trebor.tranquil.model.term.Term;
-import org.trebor.tranquil.model.term.TermProperties;
+import org.trebor.tranquil.model.term.Properties;
 import org.trebor.tranquil.view.TextRenderer;
 
 public class Transformer
 {
+  public static final Logger log = Logger.getLogger(Transformer.class);
+
   public static final Constant ZERO = new Constant(0);
   public static final Constant ONE = new Constant(1);
   public static final TermSlot A = new TermSlot();
@@ -38,7 +41,7 @@ public class Transformer
 
   public static Term simplify(Term term)
   {
-    return TermProperties.isAtomic(term)
+    return Properties.isAtomic(term)
       ? simplifyTerm(term)
       : simplifyOperator((Operator)term);
   }
@@ -100,21 +103,23 @@ public class Transformer
         if (null != simple)
         {
           term = simple;
-          System.out.println("with: " + p);
-          System.out.println("  -> " + TextRenderer.render(term));
+          log.debug("with: " + p);
+          log.debug("-> " + TextRenderer.render(term));
           change = true;
         }
       }
       
       // if there were no changes, evaluate the sucker
       
-//      if (!change)
-//      {
-//        Term simple = term.evaluate();
-//        if (simple != term)
-//          change = true;
-//      }
-      
+      if (!change)
+      {
+        Term simple = term.evaluate();
+        if (simple != term)
+        {
+          change = true;
+          term = simple;
+        }
+      }
     }
     while (change);
     

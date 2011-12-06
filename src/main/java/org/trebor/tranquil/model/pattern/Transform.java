@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.trebor.tranquil.model.term.Operator;
 import org.trebor.tranquil.model.term.Term;
-import org.trebor.tranquil.model.term.TermProperties;
+import org.trebor.tranquil.model.term.Properties;
 import org.trebor.tranquil.view.TextRenderer;
 
 public class Transform
@@ -54,7 +54,7 @@ public class Transform
       
     // if this result is atmoc,return copy of atomic term
     
-    if (TermProperties.isAtomic(result))
+    if (Properties.isAtomic(result))
       return result.copy();
 
     // the result is assumed to be an operator, recurese

@@ -1,9 +1,9 @@
 package org.trebor.tranquil.model;
 
 import static org.junit.Assert.*;
-import static org.trebor.tranquil.model.Transformer.*;
-import static org.trebor.tranquil.model.term.TermProperties.*;
-import static org.trebor.tranquil.model.term.TermProperties.Presidence.*;
+import static org.trebor.tranquil.controller.Transformer.*;
+import static org.trebor.tranquil.model.term.Properties.*;
+import static org.trebor.tranquil.model.term.Properties.Presidence.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -178,7 +178,7 @@ public class TestModel
     
     assertEquals(new Divide(one, a), simplify(new Divide(one, a)));
     assertEquals(a, simplify(new Divide(a, one)));
-    assertEquals(new Divide(one, two), simplify(new Divide(one, two)));
+    assertEquals(new Constant(0.5d), simplify(new Divide(one, two)));
     assertEquals(two, simplify(new Divide(two, one)));
     
     assertEquals(one, simplify(new Divide(cat, cat)));
@@ -205,6 +205,7 @@ public class TestModel
     assertEquals(base3, simplify(base3));
     Term cplx1 = new Multiply(base1, new Add(base2, base3)); // dog * (two + b3)
     assertEquals(new Multiply(dog, new Add(two, base3)), simplify(cplx1));
+
     Term cplx2 = new Add(zero, new Multiply(base1, one)); // dog
     assertEquals(dog, simplify(cplx2));
     Term cplx3 = new Divide(new Multiply(rat, base1), one); // rat * dog
@@ -212,8 +213,12 @@ public class TestModel
     Term moma =  new Add(new Multiply(cplx2, cplx1), new Multiply(cplx2, cplx3));
     assertEquals(new Multiply(dog, new Add(new Multiply(dog, new Add(two, base3)), new Multiply(rat, dog))), simplify(moma));
     
-//    Term reduce = new Add(one, one);
-//    assertEquals(two, reduce);
+    Term reduce1 = new Add(one, one);
+    assertEquals(two, simplify(reduce1));
+    Term reduce2 = new Multiply(cat, new Divide(cat, dog));
+    assertEquals(reduce2, simplify(reduce2));
+    Term reduce3 = new Multiply(reduce1, reduce2);
+    assertEquals(new Multiply(two, reduce2), simplify(reduce3));
   }
 
   @Test
@@ -314,10 +319,15 @@ public class TestModel
       assertEquals(i + ": " + t3.toString(), t1, t3.evaluate(map));
     }
     
-    Term same = new Subtract(one, b);
-    assertTrue(same == same.evaluate());
-    assertTrue(same != same.evaluate(map));
-    assertEquals(nOne, same.evaluate(map));
+    Term same1 = new Subtract(one, b);
+    assertTrue(same1 == same1.evaluate());
+    assertTrue(same1 != same1.evaluate(map));
+    assertEquals(nOne, same1.evaluate(map));
+    
+    Term same2 = new Multiply(new Subtract(a, b), a);
+    assertTrue(same2 == same2.evaluate());
+    assertTrue(same2 != same2.evaluate(map));
+    assertEquals(nOne, same2.evaluate(map));
   }
   
   @Test

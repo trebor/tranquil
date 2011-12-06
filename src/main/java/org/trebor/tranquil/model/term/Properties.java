@@ -3,13 +3,14 @@ package org.trebor.tranquil.model.term;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TermProperties
+public class Properties
 {
   @SuppressWarnings("rawtypes")
   private static final Class[] COMUTATIVE = 
   {
     Add.class,
     Multiply.class,
+    Equals.class,
   };
   
   @SuppressWarnings({
@@ -22,6 +23,7 @@ public class TermProperties
       put(Divide.class, 1);
       put(Add.class, 2);
       put(Subtract.class, 2);
+      put(Equals.class, 3);
       put(null, Integer.MAX_VALUE);
     }
   };
@@ -33,6 +35,7 @@ public class TermProperties
     Subtract.class,
     Multiply.class,
     Divide.class,
+    Equals.class,
   };
   
   private static final boolean isMember(Term term, @SuppressWarnings("rawtypes") Class[] set)
